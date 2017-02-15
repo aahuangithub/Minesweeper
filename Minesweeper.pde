@@ -22,6 +22,7 @@ void setup (){
     for(int r=0; r<buttons.length;r++)
         for(int c=0; c<buttons[r].length; c++)
             buttons[r][c]=new MSButton(r, c);
+    
     setBombs();
 
     for(MSButton[] r:buttons)
@@ -44,14 +45,20 @@ public void setBombs(){
 public void draw (){
     background(0);
 
-
     //draws the button array
-    for(MSButton[] r:buttons)
+    
+    for(MSButton[] r:buttons){
         for(MSButton c:r)
-            c.draw();
+            {
+                c.display();
+            }
+    }
+                fill(0);
+                rect(0, 0, 400, 400);
 
     //??? cannot draw on top of buttons???
-    rect(0, 0, 233, 232);
+    
+
     if(isWon())
         displayWinningMessage();
 }
@@ -108,7 +115,7 @@ public class MSButton{
             clicked = true;
     }
 
-    public void draw () {    
+    public void display() {    
         if (marked)
             fill(0, 200, 0);
         // else if( clicked && bombs.contains(this) ) 
@@ -120,7 +127,7 @@ public class MSButton{
 
         rect(x, y, width, height);
         fill(0);
-        text(label,x+width/2,y+height/2);
+        text((label.equals("0")?"": label),x+width/2,y+height/2);
     }
     public void setLabel(String newLabel){
         label = newLabel;
@@ -134,7 +141,9 @@ public class MSButton{
     }
     public int countBombs(){
         int numBombs = 0;
-        //checks nearby bombs
+        for(MSButton bomb:bombs)
+            if(abs(bomb.r-this.r)<=1&&abs(bomb.c-this.c)<=1)
+                numBombs++;
         return numBombs;
     }
 }
