@@ -5,7 +5,7 @@ public final static int NUM_ROWS=20;
 public final static int NUM_COLS=20;
 public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
-public final static int MAX_BOMBS=20;
+public final static int MAX_BOMBS=50;
 
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList<MSButton>();
@@ -46,21 +46,12 @@ public void draw (){
     background(0);
 
     //draws the button array
-    
-    for(MSButton[] r:buttons){
+    for(MSButton[] r:buttons)
         for(MSButton c:r)
-            {
-                c.display();
-            }
-    }
-                fill(0);
-                rect(0, 0, 400, 400);
-
-    //??? cannot draw on top of buttons???
-    
-
+            c.display();
+/*
     if(isWon())
-        displayWinningMessage();
+        displayWinningMessage();*/
 }
 
 public boolean isWon(){
@@ -70,8 +61,8 @@ public boolean isWon(){
 public void displayLosingMessage(){
     background(0);
     fill(250);
-    text("YOU WON!", width/2, height/2);
-    //noLoop();
+    text(":(", width/2, height/2);
+    noLoop();
 }
 public void displayWinningMessage(){
     background(0);
@@ -83,7 +74,6 @@ public void displayWinningMessage(){
 public class MSButton{
     private int r, c;
     private float x,y, width, height;
-    //for some reason changing the names of width and height variables doesn't work
     private boolean clicked, marked;
     private String label;
     
@@ -98,21 +88,25 @@ public class MSButton{
         marked = clicked = false;
         Interactive.add(this); // register it with the manager
     }
-    public boolean isMarked(){
-        //flags!
-        return marked;
-    }
-    public boolean isClicked(){
-        //number!
-        return clicked;
-    }
-    // called by manager
-    
+
+
     public void mousePressed(){
         if(mouseButton==RIGHT)
-            marked = true;
-        else
-            clicked = true;
+            marked = !marked;
+        else if(!clicked){
+            this.clicked=true;
+            //stops recursion if it hits a number>0
+            if(!(buttons[r][c].getLabel().equals("0"))) return;
+            
+            //recursively reveals nearby tiles
+            buttons[r][c+1].mousePressed();
+            buttons[r][c-1].mousePressed();
+            buttons[r+1][c].mousePressed();
+            buttons[r-1][c].mousePressed();
+            
+            if(this.label.equals("BOMB"))
+                displayLosingMessage();
+        }
     }
 
     public void display() {    
@@ -121,24 +115,15 @@ public class MSButton{
         // else if( clicked && bombs.contains(this) ) 
         //     fill(255,0,0);
         else if(clicked)
-            fill( 127 );
+            fill( 200 );
         else 
             fill( 250 );
-
         rect(x, y, width, height);
         fill(0);
-        text((label.equals("0")?"": label),x+width/2,y+height/2);
+        //if(this.clicked)
+            text((label.equals("0")?"": label),x+width/2,y+height/2);
     }
-    public void setLabel(String newLabel){
-        label = newLabel;
-    }
-    public String getLabel(){
-        return label;
-    }
-    public boolean isValid(int r, int c){
-        //your code here
-        return false;
-    }
+
     public int countBombs(){
         int numBombs = 0;
         for(MSButton bomb:bombs)
@@ -146,6 +131,14 @@ public class MSButton{
                 numBombs++;
         return numBombs;
     }
+
+    //set and get
+        //LABELS
+        public void setLabel(String newLabel){label = newLabel;}
+        public String getLabel(){return label;}
+        //
+        public boolean isMarked(){return marked;}
+        public boolean isClicked(){return clicked;}
 }
 
 
