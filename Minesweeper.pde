@@ -1,4 +1,10 @@
-
+/**********
+FIX: Endscreen -> replay transition
+FIX: Clean up redundant variables
+FIX: Split up program into multiple files (for cleaniness)
+ADD: score count
+ADD: Amount remaining count
+**********/
 
 import de.bezier.guido.*;
 public final static int NUM_ROWS=20;
@@ -7,15 +13,21 @@ public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
 public final static int MAX_BOMBS=50;
 
+public boolean game;
+public int numRevealed;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
-private ArrayList <MSButton> bombs = new ArrayList<MSButton>();
+private ArrayList <MSButton> bombs;
 
 void setup (){
+    game=true;
+    numRevealed=0;
+    bombs=new ArrayList<MSButton>();
+
     size(800, 800);
     textAlign(CENTER,CENTER);
     WINDOW_WIDTH=width;
     WINDOW_HEIGHT=height;
-
+    textSize(36);
     //required for guido buttons
     Interactive.make(this);
     
@@ -24,7 +36,6 @@ void setup (){
             buttons[r][c]=new MSButton(r, c);
     
     setBombs();
-
     for(MSButton[] r:buttons)
         for(MSButton c:r)
             if(!c.getLabel().equals("BOMB"))
@@ -49,20 +60,26 @@ public void draw (){
     for(MSButton[] r:buttons)
         for(MSButton c:r)
             c.display();
-/*
-    if(isWon())
-        displayWinningMessage();*/
+
+    if(!game){
+        if(isWon())
+            displayWinningMessage();
+        else
+            displayLosingMessage();
+        //call setup() to restart
+    }
 }
 
 public boolean isWon(){
-    //your code here
-    return true;
+    //fix this function
+    if(numRevealed==NUM_COLS*NUM_ROWS-MAX_BOMBS)
+        return true;
+    return false;
 }
 public void displayLosingMessage(){
     background(0);
     fill(250);
-    text(":(", width/2, height/2);
-    noLoop();
+    text("YOU LOSE!\nClick to play again.", width/2, height/2);
 }
 public void displayWinningMessage(){
     background(0);
@@ -70,76 +87,4 @@ public void displayWinningMessage(){
     text("YOU WON!", width/2, height/2);
     //noLoop();
 }
-
-public class MSButton{
-    private int r, c;
-    private float x,y, width, height;
-    private boolean clicked, marked;
-    private String label;
-    
-    public MSButton ( int rr, int cc ){
-        width = WINDOW_WIDTH/NUM_COLS;
-        height = WINDOW_HEIGHT/NUM_ROWS;
-        r = rr;
-        c = cc; 
-        x = c*width;
-        y = r*height;
-        label = "";
-        marked = clicked = false;
-        Interactive.add(this); // register it with the manager
-    }
-
-
-    public void mousePressed(){
-        if(mouseButton==RIGHT)
-            marked = !marked;
-        else if(!clicked){
-            this.clicked=true;
-            //stops recursion if it hits a number>0
-            if(!(buttons[r][c].getLabel().equals("0"))) return;
-            
-            //recursively reveals nearby tiles
-            buttons[r][c+1].mousePressed();
-            buttons[r][c-1].mousePressed();
-            buttons[r+1][c].mousePressed();
-            buttons[r-1][c].mousePressed();
-            
-            if(this.label.equals("BOMB"))
-                displayLosingMessage();
-        }
-    }
-
-    public void display() {    
-        if (marked)
-            fill(0, 200, 0);
-        // else if( clicked && bombs.contains(this) ) 
-        //     fill(255,0,0);
-        else if(clicked)
-            fill( 200 );
-        else 
-            fill( 250 );
-        rect(x, y, width, height);
-        fill(0);
-        //if(this.clicked)
-            text((label.equals("0")?"": label),x+width/2,y+height/2);
-    }
-
-    public int countBombs(){
-        int numBombs = 0;
-        for(MSButton bomb:bombs)
-            if(abs(bomb.r-this.r)<=1&&abs(bomb.c-this.c)<=1)
-                numBombs++;
-        return numBombs;
-    }
-
-    //set and get
-        //LABELS
-        public void setLabel(String newLabel){label = newLabel;}
-        public String getLabel(){return label;}
-        //
-        public boolean isMarked(){return marked;}
-        public boolean isClicked(){return clicked;}
-}
-
-
 
