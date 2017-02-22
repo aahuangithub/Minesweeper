@@ -1,10 +1,11 @@
 /**********
 FIX: Endscreen -> replay transition
-FIX: Clean up redundant variables
+FIX: Clean up redundant variables (looking at 'this')
 FIX: Split up program into multiple files (for cleaniness)
 ADD: score count
 ADD: Amount remaining count
 **********/
+//For simplicity's sake, -1 is the value for BOMB
 
 import de.bezier.guido.*;
 public final static int NUM_ROWS=20;
@@ -13,13 +14,12 @@ public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
 public final static int MAX_BOMBS=50;
 
-public boolean game;
+public int gameStatus;
 public int numRevealed;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs;
 
 void setup (){
-    game=true;
     numRevealed=0;
     bombs=new ArrayList<MSButton>();
 
@@ -38,30 +38,29 @@ void setup (){
     setBombs();
     for(MSButton[] r:buttons)
         for(MSButton c:r)
-            if(!c.getLabel().equals("BOMB"))
-                c.setLabel(String.format("%d",c.countBombs()));
+            if(c.getLabel()!=-1)
+                c.setLabel(c.countBombs());
 }
 
 public void setBombs(){
     while(bombs.size()<MAX_BOMBS){
         int r=(int)(Math.random()*NUM_ROWS);
         int c=(int)(Math.random()*NUM_COLS);
-        if(!buttons[r][c].getLabel().equals("BOMB")){
-            buttons[r][c].setLabel("BOMB");
+        if(buttons[r][c].getLabel()!=-1){
+            buttons[r][c].setLabel(-1);
             bombs.add(buttons[r][c]);
         }
     }
 }
 
 public void draw (){
-    background(0);
-
-    //draws the button array
-    for(MSButton[] r:buttons)
-        for(MSButton c:r)
-            c.display();
-
-    if(!game){
+    if(gameStatus==0){
+        //draws the button array
+        for(MSButton[] r:buttons)
+            for(MSButton c:r)
+                c.display();
+    }
+    if(gameStatus!=0){
         if(isWon())
             displayWinningMessage();
         else
@@ -79,7 +78,7 @@ public boolean isWon(){
 public void displayLosingMessage(){
     background(0);
     fill(250);
-    text("YOU LOSE!%nClick to play again.", width/2, height/2);
+    text("YOU LOSE!\nClick to play again.", width/2, height/2);
 }
 public void displayWinningMessage(){
     background(0);

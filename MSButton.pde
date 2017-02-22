@@ -1,8 +1,9 @@
+//For simplicity's sake, -1 is the value for BOMB
 public class MSButton{
     private int r, c;
     private float x,y, width, height;
     private boolean clicked, marked;
-    private String label;
+    private int label;
     
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -11,7 +12,6 @@ public class MSButton{
         c = cc; 
         x = c*width;
         y = r*height;
-        label = "";
         marked = clicked = false;
         Interactive.add(this); // register it with the manager
     }
@@ -24,9 +24,9 @@ public class MSButton{
         else if(!clicked){
             this.clicked=true;
             //if(!this.marked) numRevealed++;
-
+            if(this.marked) this.marked=false;
             //stops recursion if it hits a number>0
-            if((buttons[r][c].getLabel().equals("0"))){
+            if(this.getLabel()==0){
                 //recursively reveals nearby tiles
                 if(this.c>0)
                     buttons[r][c-1].mousePressed();
@@ -37,8 +37,8 @@ public class MSButton{
                 if(this.r<buttons.length-1)
                     buttons[r+1][c].mousePressed();
             }
-            if(this.label.equals("BOMB"))
-                game=false;
+            if(this.label==-1)
+                gameStatus=1;
         }
     }
 
@@ -51,8 +51,8 @@ public class MSButton{
             fill( 250 );
         rect(x, y, width, height);
         fill(0);
-        if(this.clicked)
-            text((label.equals("0")?"": label),x+width/2,y+height/2);
+        if(this.clicked && this.label!=0)
+            text(label,x+width/2,y+height/2);
     }
 
     public int countBombs(){
@@ -65,8 +65,8 @@ public class MSButton{
 
     //set and get
         //LABELS
-        public void setLabel(String newLabel){label = newLabel;}
-        public String getLabel(){return label;}
+        public void setLabel(int newLabel){label = newLabel;}
+        public int getLabel(){return label;}
         //BOOLS
         public boolean isMarked(){return marked;}
         public boolean isClicked(){return clicked;}
