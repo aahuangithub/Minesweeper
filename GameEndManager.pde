@@ -1,6 +1,5 @@
-void setup(){
-
-}
-void draw(){
-	
+public class GameEndManager{
+	public void mystery(){
+		println("hi: ");
+	}
 }

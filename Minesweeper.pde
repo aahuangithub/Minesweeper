@@ -39,7 +39,7 @@ void setup (){
     for(MSButton[] r:buttons)
         for(MSButton c:r)
             if(!c.getLabel().equals("BOMB"))
-                c.setLabel(Integer.toString(c.countBombs()));
+                c.setLabel(String.valueOf(c.countBombs()));
 }
 
 public void setBombs(){
