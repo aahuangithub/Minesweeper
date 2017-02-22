@@ -39,7 +39,7 @@ void setup (){
     for(MSButton[] r:buttons)
         for(MSButton c:r)
             if(!c.getLabel().equals("BOMB"))
-                c.setLabel(String.valueOf(c.countBombs()));
+                c.setLabel(String.format("%d",c.countBombs()));
 }
 
 public void setBombs(){
@@ -79,7 +79,7 @@ public boolean isWon(){
 public void displayLosingMessage(){
     background(0);
     fill(250);
-    text("YOU LOSE!\nClick to play again.", width/2, height/2);
+    text("YOU LOSE!%nClick to play again.", width/2, height/2);
 }
 public void displayWinningMessage(){
     background(0);
