@@ -18,31 +18,38 @@ public class MSButton{
 
 
     public void mousePressed(){
-        if(mouseButton==RIGHT)
+        if(mouseButton==RIGHT){
             marked = !marked;
+            flags++;
             //if(!this.clicked) numRevealed++;
+        }
         else if(!clicked){
-            this.clicked=true;
+            clicked=true;
             //if(!this.marked) numRevealed++;
-            if(this.marked) this.marked=false;
+            if(marked) {marked=false; flags--;}
             //stops recursion if it hits a number>0
-            if(this.getLabel()==0){
+            if(getLabel()==0){
                 //recursively reveals nearby tiles
-                if(this.c>0)
+                if(c>0)
                     buttons[r][c-1].mousePressed();
-                if(this.c<buttons[r].length-1)
+                if(c<buttons[r].length-1)
                     buttons[r][c+1].mousePressed();
-                if(this.r>0)
+                if(r>0)
                     buttons[r-1][c].mousePressed();
-                if(this.r<buttons.length-1)
+                if(r<buttons.length-1)
                     buttons[r+1][c].mousePressed();
+                if(c>0&&r>0) 
+                    buttons[r-1][c-1].mousePressed();
+                if(c<buttons[r].length-1 && r<buttons.length-1) 
+                    buttons[r+1][c+1].mousePressed();
             }
-            if(this.label==-1)
+            if(label==-1)
                 gameStatus=1;
         }
     }
 
-    public void display() {    
+    public void display() {  
+        textAlign(CENTER, CENTER);  
         if (marked)
             fill(0, 200, 0);
         else if(clicked)
@@ -51,14 +58,14 @@ public class MSButton{
             fill( 250 );
         rect(x, y, width, height);
         fill(0);
-        if(this.clicked && this.label!=0)
+        if(clicked && label!=0)
             text(label,x+width/2,y+height/2);
     }
 
     public int countBombs(){
         int numBombs = 0;
         for(MSButton bomb:bombs)
-            if(abs(bomb.r-this.r)<=1&&abs(bomb.c-this.c)<=1)
+            if(abs(bomb.r-r)<=1&&abs(bomb.c-c)<=1)
                 numBombs++;
         return numBombs;
     }
