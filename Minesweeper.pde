@@ -1,8 +1,7 @@
 /**********
-FIX: Endscreen -> replay transition
-FIX: Clean up redundant variables (looking at 'this')
-FIX: Split up program into multiple files (for cleaniness)
+ADD: Knight's path...
 ADD: Amount remaining count
+ADD: Win/lose condition
 **********/
 //For simplicity's sake, -1 is the value for BOMB
 
@@ -12,6 +11,7 @@ public final static int NUM_COLS=20;
 public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
 public final static int MAX_BOMBS=10;
+public static boolean shiftHeld=false;
 
 public int flags=0;
 public int gameStatus;
@@ -21,6 +21,8 @@ private ArrayList <MSButton> bombs;
 void setup (){
     bombs=new ArrayList<MSButton>();
     size(800, 850);
+    gameStatus=0;
+    frameCount=0;
     WINDOW_WIDTH=width;
     WINDOW_HEIGHT=800;
     textSize(30);
@@ -67,21 +69,36 @@ public void draw (){
             displayWinningMessage();
         else
             displayLosingMessage();
-        //call setup() to restart
     }
 }
+
 public boolean isWon(){
     return false;
 }
 public void displayLosingMessage(){
     background(0);
     fill(250);
+    gameStatus=2;
     text("YOU LOSE!\nClick to play again.", width/2, height/2);
 }
+
 public void displayWinningMessage(){
     background(0);
     fill(250);
+    gameStatus=2;
     text("YOU WON!\nin "+frameCount/60.0+" seconds.\nClick to play again.", width/2, height/2);
     //noLoop();
 }
 
+void mousePressed(){
+    if(gameStatus == 2)
+        setup();
+}
+void keyPressed(){
+    if(keyCode==SHIFT)
+        shiftHeld=true;
+}
+void keyReleased(){
+    if(keyCode==SHIFT)
+        shiftHeld=false;
+}

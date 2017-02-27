@@ -4,7 +4,8 @@ public class MSButton{
     private float x,y, width, height;
     private boolean clicked, marked;
     private int label;
-    
+    public static int num;
+
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
         height = WINDOW_HEIGHT/NUM_ROWS;
@@ -18,10 +19,9 @@ public class MSButton{
 
 
     public void mousePressed(){
-        if(mouseButton==RIGHT){
+        if(mouseButton==RIGHT || shiftHeld){
             marked = !marked;
             flags++;
-            //if(!this.clicked) numRevealed++;
         }
         else if(!clicked){
             clicked=true;
