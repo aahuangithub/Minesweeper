@@ -1,10 +1,12 @@
 //For simplicity's sake, -1 is the value for BOMB
 public class MSButton{
     private int r, c;
-    private float x,y, width, height;
+    private float x,y;
+    private float width, height;
     private boolean clicked, marked;
     private int label;
-    public static int num;
+
+    static int numRevealed;
 
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -13,6 +15,7 @@ public class MSButton{
         c = cc; 
         x = c*width;
         y = r*height;
+
         marked = clicked = false;
         Interactive.add(this); // register it with the manager
     }
@@ -21,12 +24,17 @@ public class MSButton{
     public void mousePressed(){
         if(mouseButton==RIGHT || shiftHeld){
             marked = !marked;
-            flags++;
+            //if(label==-1) bombsFlagged+=(marked?-1:1);
+            flagsUsed++;
         }
         else if(!clicked){
+            numRevealed++;
+            println(numRevealed);
             clicked=true;
-            //if(!this.marked) numRevealed++;
-            if(marked) {marked=false; flags--;}
+            if(marked){
+                marked=false; 
+                flagsUsed--;
+            }
             //stops recursion if it hits a number>0
             if(getLabel()==0){
                 //recursively reveals nearby tiles

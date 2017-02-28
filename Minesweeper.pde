@@ -8,12 +8,17 @@ ADD: Win/lose condition
 import de.bezier.guido.*;
 public final static int NUM_ROWS=20;
 public final static int NUM_COLS=20;
+//sets how big(pixel-wise) the board will be
 public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
+public static int numRevealed;
+
 public final static int MAX_BOMBS=10;
 public static boolean shiftHeld=false;
 
-public int flags=0;
+//move this to msButton class
+public int flagsUsed=0;
+
 public int gameStatus;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs;
@@ -26,6 +31,7 @@ void setup (){
     WINDOW_WIDTH=width;
     WINDOW_HEIGHT=800;
     textSize(30);
+    numRevealed=0;
     //required for guido buttons
     Interactive.make(this);
     
@@ -62,7 +68,7 @@ public void draw (){
     textAlign(LEFT);
     text("Time: "+frameCount/60+" seconds", 0, height-18);
     textAlign(RIGHT);
-    text(flags+"/"+MAX_BOMBS+" bombs flagged", width, height-18);
+    text(flagsUsed+"/"+MAX_BOMBS+" bombs flagged", width, height-18);
     if(gameStatus!=0){
         textAlign(CENTER);
         if(isWon())
@@ -73,6 +79,7 @@ public void draw (){
 }
 
 public boolean isWon(){
+    //if numRevealed+bombsFlagged==(maxrows*maxcols-maxbombs)
     return false;
 }
 public void displayLosingMessage(){
