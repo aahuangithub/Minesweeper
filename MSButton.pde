@@ -1,3 +1,4 @@
+
 //For simplicity's sake, -1 is the value for BOMB
 public class MSButton{
     private int r, c;
@@ -6,7 +7,6 @@ public class MSButton{
     private boolean clicked, marked;
     private int label;
 
-    static int numRevealed;
 
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -24,17 +24,16 @@ public class MSButton{
     public void mousePressed(){
         if(mouseButton==RIGHT || shiftHeld){
             marked = !marked;
-            //if(label==-1) bombsFlagged+=(marked?-1:1);
+            if(label==-1) bombsFlagged+=(marked?1:-1);
             flagsUsed++;
         }
         else if(!clicked){
-            numRevealed++;
-            println(numRevealed);
             clicked=true;
             if(marked){
                 marked=false; 
                 flagsUsed--;
             }
+            numRevealed++;
             //stops recursion if it hits a number>0
             if(getLabel()==0){
                 //recursively reveals nearby tiles
@@ -52,7 +51,7 @@ public class MSButton{
                     buttons[r+1][c+1].mousePressed();
             }
             if(label==-1)
-                gameStatus=1;
+                isLost=true;
         }
     }
 
