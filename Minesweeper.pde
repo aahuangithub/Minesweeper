@@ -55,7 +55,7 @@ void setup (){
     isLost=false;
     numRevealed=0;
     flagsUsed=0;
-
+    frameCount=0;
     //required for guido buttons
     Interactive.make(this);
     
