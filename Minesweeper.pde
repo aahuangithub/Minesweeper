@@ -1,6 +1,3 @@
-/**********
-ADD: Knight's path...
-**********/
 //For simplicity's sake, -1 is the value for BOMB
 
 import de.bezier.guido.*;
@@ -25,13 +22,33 @@ public int gameMode=0;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs;
 
+/*
+this code can be modified the reveal path
+use album at http://imgur.com/a/UqRtX to see what paths there are
+white is unrevealed, red is revealed, black center is click
+*/
+public static PImage img;
+public int[][] path;
+//to be completed later
+public void loadPath(){
+    img = loadImage("http://i.imgur.com/QpNMNfg.png");
+    path=new int[img.width][img.height];
+    image(img, 0, 0);
+    for(int x=0; x<img.width; x++){
+        int[] temp=new int[img.height];
+        for(int y=0; y<img.height; y++){
+            temp[y]=((get(x,y)==-1237980?1:0));
+        }
+        path[x]=temp;
+    }
+}
+
 void setup (){
     size(800, 850);
     bombs=new ArrayList<MSButton>();
     WINDOW_WIDTH=width;
     WINDOW_HEIGHT=800;
     textSize(30);
-
     gameEnd=false;
     bombsFlagged=0;
     endTime=0;
@@ -119,7 +136,10 @@ void keyPressed(){
         MAX_BOMBS++;
         setup();
     }
-    if(key==' ')gameMode++;
+    if(key==' '){
+        if(gameMode<4)gameMode++;
+        else gameMode=0;
+    };
     
 }
 void keyReleased(){
