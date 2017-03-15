@@ -30,6 +30,7 @@ white is unrevealed, red is revealed, black center is click
 public static PImage img;
 public int[][] path;
 //to be completed later
+
 public void loadPath(){
     img = loadImage("http://i.imgur.com/QpNMNfg.png");
     path=new int[img.width][img.height];
@@ -39,11 +40,18 @@ public void loadPath(){
         for(int y=0; y<img.height; y++){
             temp[y]=((get(x,y)==-1237980?1:0));
         }
+
         path[x]=temp;
+    }
+    for(int i[]:path){
+        for(int j:i)
+            print(j);
+        println("");
     }
 }
 
 void setup (){
+    loadPath();
     size(800, 850);
     bombs=new ArrayList<MSButton>();
     WINDOW_WIDTH=width;

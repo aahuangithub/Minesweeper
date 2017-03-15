@@ -65,20 +65,39 @@ public class MSButton{
             fill( 250 );
         rect(x, y, width, height);
         fill(0);
-        if(clicked && label!=0)
+       if(label!=0)
             text(label,x+width/2,y+height/2);
     }
 
     public int countBombs(){
         int numBombs = 0;
-        for(MSButton bomb:bombs)
-            if(abs(bomb.r-r)<=1&&abs(bomb.c-c)<=1)
-                numBombs++;
+        int[][] transformedPath=path;
+        int midRow=path.length/2;
+        int midCol=path[0].length/2;
+
+        for(int i=0; i<path.length; i++){
+            for(int col=0; col<path[i].length;col++){
+                if(path[i][col]==0) transformedPath[i][col]=-1;
+                else path[i][col]=col-midCol+c;
+            }
+        }
+        for(int row=0; row<transformedPath.length; row++){
+            for(int col=0; col<transformedPath[row].length;col++){
+                if(path[row][col]!=-1)
+                    for(MSButton bomb:bombs)
+                        if(bomb.getC()==transformedPath[row][col] && bomb.getR()==row-midRow+r)
+                            numBombs++;
+                        //there's probably a more efficient way to do this...
+            }
+        }
+
         return numBombs;
     }
 
     //set and get
         //LABELS
+        public int getR(){return r;}
+        public int getC(){return c;}
         public void setLabel(int newLabel){label = newLabel;}
         public int getLabel(){return label;}
         //BOOLS
