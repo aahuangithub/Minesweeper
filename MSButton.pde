@@ -6,7 +6,7 @@ public class MSButton{
     private float width, height;
     private boolean clicked, marked;
     private int label;
-
+    private Tuple[][] transformedPath = new Tuple[path.length][path[0].length];
 
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -35,6 +35,7 @@ public class MSButton{
             }
             numRevealed++;
             //stops recursion if it hits a number>0
+            /*
             if(getLabel()==0){
                 //recursively reveals nearby tiles
                 if(c>0)
@@ -49,6 +50,13 @@ public class MSButton{
                     buttons[r-1][c-1].mousePressed();
                 if(c<buttons[r].length-1 && r<buttons.length-1) 
                     buttons[r+1][c+1].mousePressed();
+            }
+            */
+              for(Tuple[] row:transformedPath){
+                for(Tuple t:row)
+                    if(t.getR()>=0 && t.getC()>=0)
+                        if(buttons[t.getR()][t.getC()].getLabel()==0)
+                            buttons[t.getR()][t.getC()].mousePressed();
             }
             if(label==-1)
                 isLost=true;
@@ -65,32 +73,31 @@ public class MSButton{
             fill( 250 );
         rect(x, y, width, height);
         fill(0);
-       if(label!=0)
+       //if(clicked && label!=0)
             text(label,x+width/2,y+height/2);
     }
 
     public int countBombs(){
         int numBombs = 0;
-        int[][] transformedPath=path;
         int midRow=path.length/2;
         int midCol=path[0].length/2;
 
         for(int i=0; i<path.length; i++){
             for(int col=0; col<path[i].length;col++){
-                if(path[i][col]==0) transformedPath[i][col]=-1;
-                else path[i][col]=col-midCol+c;
-            }
-        }
-        for(int row=0; row<transformedPath.length; row++){
-            for(int col=0; col<transformedPath[row].length;col++){
-                if(path[row][col]!=-1)
-                    for(MSButton bomb:bombs)
-                        if(bomb.getC()==transformedPath[row][col] && bomb.getR()==row-midRow+r)
-                            numBombs++;
-                        //there's probably a more efficient way to do this...
+                if(path[i][col]!=0)
+                    transformedPath[i][col] = new Tuple(i-midRow+r, col-midCol+c);
+                else
+                    transformedPath[i][col] = new Tuple(-1, -1);
             }
         }
 
+        for(MSButton bomb:bombs)
+            for(Tuple row[]:transformedPath)
+                for(Tuple t:row)
+                    if(bomb.getC()==t.getC() && bomb.getR()==t.getR())
+                        numBombs++;
+            //there's probably a more efficient way to do this...
+        
         return numBombs;
     }
 

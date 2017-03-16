@@ -22,17 +22,23 @@ public int gameMode=0;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs;
 
+private static final String[] PATHS = {
+"http://i.imgur.com/QpNMNfg.png",
+"http://i.imgur.com/9jWDgqC.png",
+"http://i.imgur.com/weRSO4O.png", 
+"http://i.imgur.com/tX4qOAa.png", 
+};
+
 /*
 this code can be modified the reveal path
-use album at http://imgur.com/a/UqRtX to see what paths there are
 white is unrevealed, red is revealed, black center is click
 */
+
 public static PImage img;
 public int[][] path;
-//to be completed later
 
 public void loadPath(){
-    img = loadImage("http://i.imgur.com/QpNMNfg.png");
+    img = loadImage(PATHS[gameMode]);
     path=new int[img.width][img.height];
     image(img, 0, 0);
     for(int x=0; x<img.width; x++){
@@ -40,13 +46,7 @@ public void loadPath(){
         for(int y=0; y<img.height; y++){
             temp[y]=((get(x,y)==-1237980?1:0));
         }
-
         path[x]=temp;
-    }
-    for(int i[]:path){
-        for(int j:i)
-            print(j);
-        println("");
     }
 }
 
@@ -108,7 +108,9 @@ public void draw (){
 }
 
 public boolean isWon(){
-    if (NUM_ROWS*NUM_COLS-numRevealed-bombsFlagged==MAX_BOMBS) return true;
+    //if (NUM_ROWS*NUM_COLS-numRevealed-bombsFlagged==MAX_BOMBS) 
+    if(bombsFlagged==MAX_BOMBS)
+        return true;
     return false;
 }
 public void displayLosingMessage(){
@@ -145,10 +147,10 @@ void keyPressed(){
         setup();
     }
     if(key==' '){
-        if(gameMode<4)gameMode++;
+        if(gameMode<3)gameMode++;
         else gameMode=0;
+        setup();
     };
-    
 }
 void keyReleased(){
     if(keyCode==SHIFT)
