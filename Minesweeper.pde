@@ -8,7 +8,7 @@ public final static int NUM_COLS=20;
 public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
 //
-public static int MAX_BOMBS=10;
+public static int MAX_BOMBS=15;
 
 public boolean gameEnd;
 public static int bombsFlagged;
@@ -16,7 +16,7 @@ public static int endTime;
 public static boolean isLost;
 
 public static boolean shiftHeld=false;
-public int numRevealed;
+
 public int flagsUsed=0;
 public int gameMode=0;
 private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of minesweeper buttons
@@ -61,7 +61,7 @@ void setup (){
     bombsFlagged=0;
     endTime=0;
     isLost=false;
-    numRevealed=0;
+
     flagsUsed=0;
     frameCount=0;
     //required for guido buttons

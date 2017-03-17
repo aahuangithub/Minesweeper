@@ -33,31 +33,16 @@ public class MSButton{
                 marked=false; 
                 flagsUsed--;
             }
-            numRevealed++;
-            //stops recursion if it hits a number>0
-            /*
-            if(getLabel()==0){
-                //recursively reveals nearby tiles
-                if(c>0)
-                    buttons[r][c-1].mousePressed();
-                if(c<buttons[r].length-1)
-                    buttons[r][c+1].mousePressed();
-                if(r>0)
-                    buttons[r-1][c].mousePressed();
-                if(r<buttons.length-1)
-                    buttons[r+1][c].mousePressed();
-                if(c>0&&r>0) 
-                    buttons[r-1][c-1].mousePressed();
-                if(c<buttons[r].length-1 && r<buttons.length-1) 
-                    buttons[r+1][c+1].mousePressed();
-            }
-            */
+ 
               for(Tuple[] row:transformedPath){
-                for(Tuple t:row)
-                    if(t.getR()>=0 && t.getC()>=0)
-                        if(buttons[t.getR()][t.getC()].getLabel()==0)
+                for(Tuple t:row){
+                    if(t.getR()>=0 && t.getR()<buttons.length && t.getC()>=0 && t.getC()<buttons[t.getR()].length){
+                        if(getLabel()==0){
                             buttons[t.getR()][t.getC()].mousePressed();
-            }
+                        }
+                    }
+                }
+              }
             if(label==-1)
                 isLost=true;
         }
@@ -73,7 +58,7 @@ public class MSButton{
             fill( 250 );
         rect(x, y, width, height);
         fill(0);
-       //if(clicked && label!=0)
+        if(isClicked() && label>0)
             text(label,x+width/2,y+height/2);
     }
 
@@ -110,6 +95,7 @@ public class MSButton{
         //BOOLS
         public boolean isMarked(){return marked;}
         public boolean isClicked(){return clicked;}
+        public void clickTrue(){clicked=true;}
 }
 
 
