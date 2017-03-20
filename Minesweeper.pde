@@ -23,10 +23,10 @@ private MSButton[][] buttons = new MSButton[NUM_ROWS][NUM_COLS]; //2d array of m
 private ArrayList <MSButton> bombs;
 
 private static final String[] PATHS = {
-"http://i.imgur.com/QpNMNfg.png",
-"http://i.imgur.com/9jWDgqC.png",
-"http://i.imgur.com/weRSO4O.png", 
-"http://i.imgur.com/tX4qOAa.png", 
+"https://i.imgur.com/QpNMNfg.png",
+"https://i.imgur.com/9jWDgqC.png",
+"https://i.imgur.com/weRSO4O.png", 
+"https://i.imgur.com/tX4qOAa.png", 
 };
 
 /*
@@ -35,7 +35,7 @@ white is unrevealed, red is revealed, black center is click
 */
 
 public static PImage img;
-public int[][] path;
+public static int[][] path;
 
 public void loadPath(){
     img = loadImage(PATHS[gameMode]);
