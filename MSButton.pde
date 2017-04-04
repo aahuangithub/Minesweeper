@@ -5,7 +5,7 @@ public class MSButton{
     private float width, height;
     private boolean clicked, marked;
     private int label;
-    private Tuple[][] transformedPath = new Tuple[path.length][path[0].length];
+    private Tuple[][] transformedPath = new Tuple[path.length][path[gameMode].length];
 
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -64,7 +64,7 @@ public class MSButton{
     public int countBombs(){
         int numBombs = 0;
         int midRow=path.length/2;
-        int midCol=path[0].length/2;
+        int midCol=path[gameMode].length/2;
 
         for(int i=0; i<path.length; i++){
             for(int col=0; col<path[i].length;col++){
@@ -84,7 +84,10 @@ public class MSButton{
         
         return numBombs;
     }
-
+    public void resetButton(){
+        clicked=marked=false;
+        transformedPath = new Tuple[path.length][path[gameMode].length];
+    }
     //set and get
         //LABELS
         public int getR(){return r;}

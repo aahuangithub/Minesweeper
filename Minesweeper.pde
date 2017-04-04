@@ -9,6 +9,7 @@ public static int WINDOW_WIDTH;
 public static int WINDOW_HEIGHT;
 //
 public static int MAX_BOMBS=15;
+public static boolean firstRun=true;
 
 public boolean gameEnd;
 public static int bombsFlagged;
@@ -66,11 +67,16 @@ void setup (){
     frameCount=0;
     //required for guido buttons
     Interactive.make(this);
-    
-    for(int r=0; r<buttons.length;r++)
-        for(int c=0; c<buttons[r].length; c++)
-            buttons[r][c]=new MSButton(r, c);
-    
+    if(firstRun){
+        firstRun=false;
+        for(int r=0;r<buttons.length;r++)
+            for(int c=0; c<buttons[r].length; c++)
+                buttons[r][c]=new MSButton(r, c);
+    }else{
+        for(MSButton r[]:buttons)
+            for(MSButton c:r)
+                c.resetButton();
+    }
     setBombs();
     for(MSButton[] r:buttons)
         for(MSButton c:r)
@@ -90,7 +96,21 @@ public void setBombs(){
 }
 
 public void draw (){
-    background(127);
+    switch(gameMode){
+        case 0:
+            background(127);
+            break;
+        case 1:
+            background(200, 100, 100);
+            break;
+        case 2:
+            background(100, 200, 100);
+            break;
+        case 3:
+            background(100, 150, 200);
+            break;
+    }
+    
     if(!gameEnd)
         //draws the button array
         for(MSButton[] r:buttons)
