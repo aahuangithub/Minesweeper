@@ -5,7 +5,7 @@ public class MSButton{
     private float width, height;
     private boolean clicked, marked;
     private int label;
-    private Tuple[][] transformedPath = new Tuple[path.length][path[gameMode].length];
+    private Tuple[][] transformedPath;
 
     public MSButton (int rr, int cc){
         width = WINDOW_WIDTH/NUM_COLS;
@@ -14,7 +14,7 @@ public class MSButton{
         c = cc; 
         x = c*width;
         y = r*height;
-
+        transformedPath = new Tuple[path.length][path[gameMode].length];
         marked = clicked = false;
         Interactive.add(this); // register it with the manager
     }
@@ -25,25 +25,19 @@ public class MSButton{
             marked = !marked;
             if(label==-1) bombsFlagged+=(marked?1:-1);
             flagsUsed++;
-        }
-        else if(!clicked){
+        }else if(!clicked){
             clicked=true;
             if(marked){
                 marked=false; 
                 flagsUsed--;
             }
- 
-              for(Tuple[] row:transformedPath){
-                for(Tuple t:row){
-                    if(t.getR()>=0 && t.getR()<buttons.length && t.getC()>=0 && t.getC()<buttons[t.getR()].length){
-                        if(getLabel()==0){
-                            buttons[t.getR()][t.getC()].mousePressed();
-                        }
-                    }
-                }
-              }
-            if(label==-1)
-                isLost=true;
+            
+            if(getLabel()==0)   
+                for(Tuple[] row:transformedPath)
+                    for(Tuple t:row)
+                        if(t.getR()>=0 && t.getR()<NUM_ROWS && t.getC()>=0 && t.getC()<NUM_COLS
+                            && !buttons[t.getR()][t.getC()].isMarked())
+                                buttons[t.getR()][t.getC()].mousePressed();
         }
     }
 

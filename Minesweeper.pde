@@ -123,12 +123,12 @@ public void draw (){
     text(flagsUsed+"/"+MAX_BOMBS+" bombs flagged", width, height-18);
     if(isWon())
         displayWinningMessage();
-    if(isLost)
-        displayLosingMessage();
+    for(MSButton bomb:bombs) //there's probs a more efficient way to do this
+        if(bomb.isClicked())
+            displayLosingMessage();
 }
 
-public boolean isWon(){
-    //if (NUM_ROWS*NUM_COLS-numRevealed-bombsFlagged==MAX_BOMBS) 
+public boolean isWon(){ 
     if(bombsFlagged==MAX_BOMBS)
         return true;
     return false;
