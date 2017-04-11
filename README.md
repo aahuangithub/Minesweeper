@@ -1,4 +1,4 @@
-#Minesweeper *(...but differnt!)*
+Minesweeper *(...but different!)*
 ---
 Starting off you can play the normal minesweeper game (grey background)...    
 pressing space switches not only the background color but the game mode as well    
