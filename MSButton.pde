@@ -81,6 +81,7 @@ public class MSButton{
     public void resetButton(){
         clicked=marked=false;
         transformedPath = new Tuple[path.length][path[gameMode].length];
+        label=0;
     }
     //set and get
         //LABELS
