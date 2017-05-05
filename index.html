@@ -1,27 +1,40 @@
-<!DOCTYPE html>
+
 	<head>
 		<meta charset="utf-8">
 		<title>Aaron's Minesweeper</title>
-		<link rel="stylesheet" href="styles.css">
-		<script src="processing.js"></script>
-		<script src="Guido.js" type="text/javascript"></script>
+		<style>
+			body{
+				font-family: sans-serif;
+				line-height: 1.5rem;
+				width:600px;
+				padding-left:1rem;
+				padding-top:2rem;
+				margin:0 auto;
+			}
+		
+		
+		</style>
 	</head>
 	<body>
-		<header>
-			<h1>Minesweeper</h1>
-		</header>
-			<section id="content">
-				<canvas id="Minesweeper" data-processing-sources="MSButton.pde Minesweeper.pde Tuple.java">
-				</canvas>
-		    </section>
-		    <footer>
-		    Follows standard minesweeper rules.
-		    <br>
-		    Shift-click or right click to flag.
-		    <br>
-		    Use the right and left arrow keys to increase/decrease the number of bombs.
-		    <br>
-		    Spacebar will reset the board and cycle through game modes (a full list of gamemodes can be found in the readme file on the project page).
-		    </footer>
+		<h1>Minesweeper</h1>
+		<hr>
+		<div id="game-instructions">
+			<h2>Instructions</h2>
+			<ul>
+			    <li>Follow the <a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)#Overview">standard minesweeper rules...</a></li>
+			    <li>Shift-click or right click to flag (marked with a green square). Flag all bombs on the board to win.</li>
+			    <li>Use the right and left arrow keys to increase/decrease the number of bombs.
+			    <li>Spacebar will reset the board and cycle through game modes (a full list of gamemodes can be found in the <a href="https://github.com/aahuangithub/Minesweeper">readme file on the project page</a>).</li>
+			</ul>
+		</div>
+		<div id="download">
+			<h2>Download</h2>
+			<em>Due to the way the game is made, Processing.js does NOT properly render the game in browser. Download the source and run with <a href="https://processing.org/">processing</a> or get the windows exe below.</em>
+			<ol>
+				<li>Get the zip file for your operating system on the <a href="https://github.com/aahuangithub/Minesweeper/releases">releases page.</a></li>
+				<li>Extract the exe file and the libraries included into the same folder.</li>
+				<li>Run the exe file.</li>
+			</ol>
+		</div>
 	</body>
-</html>
+
