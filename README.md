@@ -22,5 +22,5 @@ TO-DO:
 *Put all of this info into the actual program
 *Make it run faster (there are a few redundant loops that could be made more efficient)
 *Clean up syntax/excess variables
-
+*Figure out *why* it doesn't play nice with processing.js and fix that
 ````
